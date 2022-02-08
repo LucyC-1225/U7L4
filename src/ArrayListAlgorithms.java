@@ -204,6 +204,108 @@ public class ArrayListAlgorithms {
             wordList.add(wordList.get(i).toUpperCase());
         }
     }
+    /** Returns an arraylist of Strings that represents the input sentence parsed
+     *  into separate words (using a space: " " as the delimiter) and REVERSED
+     *  For example, if sentence = "This is my sentence!"
+     *  this method return [sentence!, my, is, This]
+     *
+     *  PRECONDITION: sentence does not end with a space
+     *
+     *  @param sentence  the input String that represents one or more words
+    separated by spaces
+     *  @return  new arraylist of Strings containing the words of sentence reversed
+     */
+    public static ArrayList<String> parseWordsAndReverse(String sentence)
+    {
+        ArrayList<String> temp = new ArrayList<String>();
+        int index = sentence.indexOf(" ");
+        String tempStr = sentence;
+        while (index != -1){
+            temp.add(tempStr.substring(0, index));
+            tempStr = tempStr.substring(index + 1);
+            index = tempStr.indexOf(" ");
+        }
+        temp.add(tempStr);
+        ArrayList<String> reverse = new ArrayList<String>();
+        for (int i = temp.size() - 1; i >= 0; i--){
+            reverse.add(temp.get(i));
+        }
+        return reverse;
+    }
+    /** Removes all words from wordList that begin with "b" and inserts them at the
+     *  front of wordList; all "b" words that are moved should appear in the same order
+     *  in the modified arrayList as they did before being moved
+     *
+     *  For example, this method will take a wordList:
+     *  ["apple", "banana", "cherry", "donut", "bagel", "danish", "berry", "baguette", "soda"]
+     *  and modify it to
+     *  ["banana", "bagel", "berry", "baguette", "apple", "cherry", "donut", "danish", "soda"]
+     *
+     *  DOES mutate (modify) elements in wordList
+     *  PRECONDITIONS: wordList.size() > 0, all strings in wordList have at least one character
+     *
+     *  @param wordList  arraylist of words
+     */
+    public static void moveBWords(ArrayList<String> wordList)
+    {
+        int insertIndex = 0;
+        for (int i = 0; i < wordList.size(); i++){
+            if (wordList.get(i).substring(0, 1).equals("b")){
+                String temp = wordList.get(i);
+                wordList.remove(i);
+                wordList.add(insertIndex, temp);
+                insertIndex++;
+            }
+        }
+    }
+    /** Returns Arraylist of Integers that contain all mode(s) of the int array numList.
+     *  If elements in numList all appear exactly once, there is no mode, and this method
+     *  should return an empty list
+     *
+     *  For example, if numList is: [1, 2, 3, 2, 4, 5, 5, 6],
+     *  then numList contains two modes: 2, 5
+     *  and this method returns an arraylist containing 2 and 5 (in any order)
+     *  If numList is: [1, 2, 3, 2, 4, 5, 5, 6, 6, 7, 6],
+     *  then numList contains one mode: 6
+     *  and this method returns an arrayList containing 6
+     *  If numList is: [1, 2, 3, 4, 5, 6], then numList contains no mode
+     *  and this method returns an empty arrayList: []
+     *  If numList is: [2, 2, 2, 3, 3, 3, 4, 4, 4],
+     *  then numList contains three modes: 2, 3, 4
+     *  and this method returns an arrayList containing 2, 3, and 4 (in any order)
+     *
+     *  Does NOT mutate (modify) elements in numList
+     *  PRECONDITIONS: numList.length > 0
+     *
+     *  @param numList  numList of ints
+     */
+    public static ArrayList<Integer> modes(int[] numList)
+    {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int highestOccurence = 1;
+        for (int i = 0; i < numList.length; i++){
+            int tempOccurence = 0;
+            for (int j = 0; j < numList.length; j++){
+                if (numList[j] == numList[i]){
+                    tempOccurence++;
+                }
+            }
+            if (tempOccurence > highestOccurence){
+                highestOccurence = tempOccurence;
+                if (list.size() == 0){
+                    list.add(numList[i]);
+                } else {
+                    list.clear();
+                    list.add(numList[i]);
+                }
+
+            } else if (tempOccurence == highestOccurence && tempOccurence != 1){
+                list.add(numList[i]);
+            }
+        }
+        removeDuplicates(list);
+        return list;
+    }
 }
 
 
